@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"github.com/schnaidar/radiowatch"
 	"time"
-	"fmt"
 )
 
 // XML? Srsly?
@@ -42,18 +41,10 @@ func (c *FfnCrawler) Crawl() (*radiowatch.TrackInfo, error) {
 		return nil, err
 	}
 
-	songStart, err := time.Parse("2006-01-02 15:04:05", songInfo.Onair.Start)
-	if err != nil {
-		return nil, err
-	}
+	// Falling back to periodical check as the duration property seems to be weird.
+	// The value translates most of the time to about 5 minutes, so some songs are skipped when crawling.
+	c.setNextCrawlTime(time.Now().Add(90 * time.Second))
 
-	songDuration, err := time.ParseDuration(songInfo.Onair.Duration + "ms")
-	if err != nil {
-		return nil, err
-	}
-	c.setNextCrawlTime(songStart.Add(songDuration))
-	fmt.Println(songStart)
-	fmt.Println(c.NextCrawlTime())
 	return &radiowatch.TrackInfo{
 		Artist: songInfo.Onair.Artist,
 		Title: songInfo.Onair.Title,
