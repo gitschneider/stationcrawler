@@ -48,7 +48,11 @@ func (d *DasDingCrawler) Crawl() (*radiowatch.TrackInfo, error) {
 
 	var song *gabs.Container
 	for _, song = range songs {
-		start, err := parseUnixString(song.Search("scheduledAtTs").Data().(string))
+		scheduledAt, ok := song.Search("scheduledAtTs").Data().(string)
+		if !ok {
+			return nil, errors.New("Error while converting scheduledAt timestamp. Was not string.")
+		}
+		start, err := parseUnixString(scheduledAt)
 		if err != nil {
 			return nil, err
 		}
