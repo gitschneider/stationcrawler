@@ -6,6 +6,7 @@ import (
 	"github.com/schnaidar/radiowatch"
 	"github.com/Jeffail/gabs"
 	"errors"
+	"fmt"
 )
 
 type dasDingSongInfo struct {
@@ -50,14 +51,21 @@ func (d *DasDingCrawler) Crawl() (*radiowatch.TrackInfo, error) {
 	for _, song = range songs {
 		scheduledAt, ok := song.Search("scheduledAtTs").Data().(string)
 		if !ok {
-			return nil, errors.New("Error while converting scheduledAt timestamp. Was not string.")
+			return nil, fmt.Errorf("Error while converting scheduledAt timestamp. Expected string, got %s",
+				song.Search("scheduledAtTs").Data())
 		}
 		start, err := parseUnixString(scheduledAt)
 		if err != nil {
 			return nil, err
 		}
 
-		length, err := time.ParseDuration(song.Search("duration").Data().(string) + "s")
+		duration, ok := song.Search("duration").Data().(string)
+		if !ok {
+			return nil, fmt.Errorf("Error while converting duration. Expected tring, got %s",
+				song.Search("duration").Data())
+		}
+
+		length, err := time.ParseDuration(duration + "s")
 		if err != nil {
 			return nil, err
 		}
