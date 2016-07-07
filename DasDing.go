@@ -49,6 +49,15 @@ func (d *DasDingCrawler) Crawl() (*radiowatch.TrackInfo, error) {
 
 	var song *gabs.Container
 	for _, song = range songs {
+		// is there even a song being played?
+		songTitle, ok := song.Search("title").Data().(string)
+		if !ok {
+			return nil, fmt.Errorf("No song is played at the moment!")
+		}
+		if songTitle == "" {
+			return nil, fmt.Errorf("No song is played at the moment!")
+		}
+
 		scheduledAt, ok := song.Search("scheduledAtTs").Data().(string)
 		if !ok {
 			return nil, fmt.Errorf("Error while converting scheduledAt timestamp. Expected string, got %s",
@@ -77,7 +86,7 @@ func (d *DasDingCrawler) Crawl() (*radiowatch.TrackInfo, error) {
 				Artist:song.Search("artist").Data().(string),
 				CrawlTime: time.Now(),
 				Station: d.name,
-				Title: song.Search("title").Data().(string),
+				Title: songTitle,
 			}, nil
 		}
 	}
