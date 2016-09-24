@@ -5,6 +5,7 @@ import (
 	"errors"
 	"time"
 	"github.com/schnaidar/radiowatch"
+	"html"
 )
 
 type ndrSongInfo struct {
@@ -27,8 +28,8 @@ func crawlNdrStation(url string, name string) (*radiowatch.TrackInfo, error) {
 	}
 
 	return &radiowatch.TrackInfo{
-		Artist:    trackInfos[0],
-		Title:     trackInfos[1],
+		Artist:    html.UnescapeString(trackInfos[0]),
+		Title:     html.UnescapeString(trackInfos[1]),
 		Station:   name,
 		CrawlTime: time.Now(),
 	}, nil
