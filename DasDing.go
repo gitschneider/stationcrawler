@@ -7,7 +7,6 @@ import (
 	"github.com/Jeffail/gabs"
 	"errors"
 	"fmt"
-	"strings"
 	"html"
 )
 
@@ -60,6 +59,12 @@ func (d *DasDingCrawler) Crawl() (*radiowatch.TrackInfo, error) {
 			return nil, fmt.Errorf("No song is played at the moment!")
 		}
 
+		// Check if the current entry is already scheduled
+		playedAt := song.Search("playedAtTs").Data()
+		if playedAt == nil{
+			continue
+		}
+
 		scheduledAt, ok := song.Search("scheduledAtTs").Data().(string)
 		if !ok {
 			return nil, fmt.Errorf("Error while converting scheduledAt timestamp. Expected string, got %s",
@@ -86,12 +91,13 @@ func (d *DasDingCrawler) Crawl() (*radiowatch.TrackInfo, error) {
 			d.setNextCrawlTime(end)
 
 			artist := html.UnescapeString(song.Search("artist").Data().(string))
-			if strings.Contains(artist, ",") {
-				parts := strings.Split(artist, ",")
-				for i, j := 0, len(parts) - 1; i < j; i, j = i +1, j -1 {
-					parts[i], parts[j] = parts[j], parts[i]
-				}
-			}
+			//if strings.Contains(artist, ",") {
+			//	parts := strings.Split(artist, ",")
+			//	for i, j := 0, len(parts) - 1; i < j; i, j = i +1, j -1 {
+			//		parts[i], parts[j] = parts[j], parts[i]
+			//	}
+			//	artist = strings.Join(parts, ",")
+			//}
 
 			return &radiowatch.TrackInfo{
 				Artist: artist,
