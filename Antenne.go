@@ -4,6 +4,7 @@ import (
 	"github.com/schnaidar/radiowatch"
 	"errors"
 	"time"
+	"html"
 )
 
 type AntenneSongInfo struct {
@@ -57,8 +58,8 @@ func (c *AntenneCrawler) Crawl() (*radiowatch.TrackInfo, error) {
 
 	c.setNextCrawlTime(start.Add(duration))
 	return &radiowatch.TrackInfo{
-		Title: song.Result.Entry[0].Song.Entry[0].Title,
-		Artist: song.Result.Entry[0].Song.Entry[0].Artist.Entry[0].Name,
+		Title: html.UnescapeString(song.Result.Entry[0].Song.Entry[0].Title),
+		Artist: html.UnescapeString(song.Result.Entry[0].Song.Entry[0].Artist.Entry[0].Name),
 		Station: c.Name(),
 		CrawlTime: time.Now(),
 	}, nil

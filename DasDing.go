@@ -7,6 +7,8 @@ import (
 	"github.com/Jeffail/gabs"
 	"errors"
 	"fmt"
+	"strings"
+	"html"
 )
 
 type dasDingSongInfo struct {
@@ -82,11 +84,21 @@ func (d *DasDingCrawler) Crawl() (*radiowatch.TrackInfo, error) {
 		end := start.Add(length)
 		if isNow(start, end) {
 			d.setNextCrawlTime(end)
+
+			artist := html.UnescapeString(song.Search("artist").Data().(string))
+			if strings.Contains(artist, ",") {
+				parts := strings.Split(artist, ",")
+				tmp := new([]string)
+				for key := range parts {
+					tmp[len(parts)- (1+key)] = parts[key]
+				}
+			}
+
 			return &radiowatch.TrackInfo{
-				Artist:song.Search("artist").Data().(string),
+				Artist: artist,
 				CrawlTime: time.Now(),
 				Station: d.name,
-				Title: songTitle,
+				Title: html.UnescapeString(songTitle),
 			}, nil
 		}
 	}

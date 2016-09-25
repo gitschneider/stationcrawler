@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"github.com/schnaidar/radiowatch"
 	"time"
+	"html"
 )
 
 // XML? Srsly?
@@ -46,8 +47,8 @@ func (c *FfnCrawler) Crawl() (*radiowatch.TrackInfo, error) {
 	c.setNextCrawlTime(time.Now().Add(90 * time.Second))
 
 	return &radiowatch.TrackInfo{
-		Artist: songInfo.Onair.Artist,
-		Title: songInfo.Onair.Title,
+		Artist: html.UnescapeString(songInfo.Onair.Artist),
+		Title: html.UnescapeString(songInfo.Onair.Title),
 		CrawlTime: time.Now(),
 		Station: c.Name(),
 	}, nil

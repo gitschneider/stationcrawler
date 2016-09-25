@@ -4,6 +4,7 @@ import (
 	"time"
 	"github.com/schnaidar/radiowatch"
 	"errors"
+	"html"
 )
 
 type hrSongInfo struct {
@@ -40,10 +41,10 @@ func (d *hrCrawler) Crawl() (*radiowatch.TrackInfo, error) {
 		if isNow(start, end) {
 			d.setNextCrawlTime(end.Add(10 * time.Second))
 			return &radiowatch.TrackInfo{
-				Artist:body.Songs[3].Interpret,
+				Artist: html.UnescapeString(body.Songs[3].Interpret),
 				CrawlTime: time.Now(),
 				Station: d.name,
-				Title: body.Songs[3].Titel,
+				Title: html.UnescapeString(body.Songs[3].Titel),
 			}, nil
 		}
 	}
