@@ -88,9 +88,8 @@ func (d *DasDingCrawler) Crawl() (*radiowatch.TrackInfo, error) {
 			artist := html.UnescapeString(song.Search("artist").Data().(string))
 			if strings.Contains(artist, ",") {
 				parts := strings.Split(artist, ",")
-				tmp := new([]string)
-				for key := range parts {
-					tmp[len(parts)- (1+key)] = parts[key]
+				for i, j := 0, len(parts) - 1; i < j; i, j = i +1, j -1 {
+					parts[i], parts[j] = parts[j], parts[i]
 				}
 			}
 
