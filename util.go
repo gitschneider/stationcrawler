@@ -6,7 +6,13 @@ import (
 	"encoding/json"
 	"time"
 	"strconv"
+	"errors"
+	"bytes"
 )
+
+func NoSongNowError() error {
+	return errors.New("No Song is played at the moment!")
+}
 
 func readJson(url string, jsonStruct interface{}) error {
 	resp, err := http.Get(url)
@@ -19,6 +25,10 @@ func readJson(url string, jsonStruct interface{}) error {
 	if err != nil {
 		return err
 	}
+
+	// There could be a response with BOM, which is actually neither allowed
+	// nor can be parsed. Trimming is totally fine and needed
+	bodyBytes = bytes.TrimPrefix(bodyBytes, []byte{239, 187, 191})
 
 	err = json.Unmarshal(bodyBytes, &jsonStruct)
 	if err != nil {
