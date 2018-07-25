@@ -1,8 +1,9 @@
 package stationcrawler
 
 import (
-	"github.com/schnaidar/radiowatch"
 	"time"
+
+	"github.com/schnaidar/radiowatch"
 )
 
 type Ndr2Crawler struct {
@@ -11,7 +12,7 @@ type Ndr2Crawler struct {
 
 func (n *Ndr2Crawler) Crawl() (*radiowatch.TrackInfo, error) {
 	n.setNextCrawlTime(time.Now().Add(90 * time.Second))
-	return crawlNdrStation("https://www.ndr.de/public/radio_playlists/ndr2.json", n.name)
+	return crawlNdrStation("https://www.ndr.de/public/radioplaylists/ndr2.json", n.name)
 }
 
 func (n *Ndr2Crawler) Name() string {
