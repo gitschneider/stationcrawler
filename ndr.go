@@ -17,7 +17,7 @@ type ndrSongInfo struct {
 	SongNow      string `json:"song_now"`
 	SongNowCover string `json:"song_now_cover"`
 	SongPrevious string `json:"song_previous"`
-	TimeStamp    string `json:"timeStamp"`
+	TimeStamp    uint64 `json:"timeStamp"`
 }
 
 func crawlNdrStation(url string, name string) (*radiowatch.TrackInfo, error) {
