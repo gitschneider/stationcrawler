@@ -1,7 +1,7 @@
 package stationcrawler
 
 import (
-	"github.com/schnaidar/radiowatch"
+	"github.com/gitschneider/radiowatch"
 	"errors"
 	"time"
 	"html"

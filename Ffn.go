@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 	"net/http"
 	"io/ioutil"
-	"github.com/schnaidar/radiowatch"
+	"github.com/gitschneider/radiowatch"
 	"time"
 	"html"
 )

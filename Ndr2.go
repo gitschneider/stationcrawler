@@ -3,7 +3,7 @@ package stationcrawler
 import (
 	"time"
 
-	"github.com/schnaidar/radiowatch"
+	"github.com/gitschneider/radiowatch"
 )
 
 type Ndr2Crawler struct {

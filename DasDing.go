@@ -3,7 +3,7 @@ package stationcrawler
 import (
 	"time"
 	"net/http"
-	"github.com/schnaidar/radiowatch"
+	"github.com/gitschneider/radiowatch"
 	"github.com/Jeffail/gabs"
 	"errors"
 	"fmt"

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"errors"
 	"html"
-	"github.com/schnaidar/radiowatch"
+	"github.com/gitschneider/radiowatch"
 )
 
 type mdrJumpSongInfo struct {

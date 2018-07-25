@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/Sirupsen/logrus"
-	"github.com/schnaidar/radiowatch"
+	"github.com/gitschneider/radiowatch"
 )
 
 type ndrSongInfo struct {
