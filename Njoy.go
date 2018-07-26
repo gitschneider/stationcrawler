@@ -1,8 +1,9 @@
 package stationcrawler
 
 import (
-	"github.com/gitschneider/radiowatch"
 	"time"
+
+	"github.com/gitschneider/radiowatch"
 )
 
 type NjoyCrawler struct {
@@ -11,7 +12,7 @@ type NjoyCrawler struct {
 
 func (n *NjoyCrawler) Crawl() (*radiowatch.TrackInfo, error) {
 	n.setNextCrawlTime(time.Now().Add(90 * time.Second))
-	return crawlNdrStation("https://www.n-joy.de/public/radio_playlists/njoy.json", n.name)
+	return crawlNdrStation("https://www.n-joy.de/public/radioplaylists/njoy.json", n.name)
 }
 
 func (n *NjoyCrawler) Name() string {
