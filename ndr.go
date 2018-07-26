@@ -6,7 +6,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/gitschneider/radiowatch"
 )
 
@@ -22,15 +21,13 @@ type ndrSongInfo struct {
 
 func crawlNdrStation(url string, name string) (*radiowatch.TrackInfo, error) {
 	var body ndrSongInfo
-	log := logrus.WithField("crawler", name)
 	if err := readJson(url, &body); err != nil {
 		return nil, err
 	}
 
 	trackInfos := strings.Split(body.SongNow, " - ")
-	log.Debug(trackInfos)
 	if len(trackInfos) != 2 {
-		return nil, errors.New("Did not get info about current track!")
+		return nil, errors.New("Did not get info about current track")
 	}
 
 	return &radiowatch.TrackInfo{
